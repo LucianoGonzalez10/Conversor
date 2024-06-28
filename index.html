@@ -17,7 +17,30 @@
         </select>
         <button id="convertButton">Convertir a Audio</button>
     </center>
+    <style>body{
+        background-color: rgb(126, 6, 6);
+    }
+    h1{
+        color: white;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
     
+    #videoUrl{
+        width:40%;
+        height: 25px;
+    }
+    
+    button{
+        font-size: 15px;
+        border: none;
+        background-color: white(255, 255, 255);
+        color: black;
+    }
+    
+    button:hover{
+        cursor: pointer;
+        background-color: rgb(161, 161, 161);
+    }</style>
     <script>
         document.getElementById('convertButton').addEventListener('click', async () => {
             const videoUrl = document.getElementById('videoUrl').value.trim();

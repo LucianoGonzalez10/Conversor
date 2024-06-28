@@ -6,12 +6,12 @@ const path = require('path');
 const app = express();
 const port = 3000;
 
-// Servir archivos estáticos desde la carpeta 'public'
-app.use(express.static(path.join(__dirname, 'public')));
+// Servir archivos estáticos desde la carpeta 'public' (opcional si tienes otros archivos estáticos)
+// app.use(express.static(path.join(__dirname, 'public')));
 
 // Ruta para la URL raíz
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.get('/test', (req, res) => {
