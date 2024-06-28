@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Convertir Video de YouTube a Audio</title>
+</head>
+<body>
+    <center>
+        <h1>Convertir Video de YouTube a Audio By Luciano Gonzalez Marangoni</h1>
+        <input type="text" id="videoUrl" placeholder="Introduce el URL del video de YouTube">
+        <select id="audioFormat">
+            <option value="mp3">MP3</option>
+            <option value="wav">WAV</option>
+            <!-- Puedes agregar más opciones según los formatos que desees soportar -->
+        </select>
+        <button id="convertButton">Convertir a Audio</button>
+    </center>
+    
+    <script>
+        document.getElementById('convertButton').addEventListener('click', async () => {
+            const videoUrl = document.getElementById('videoUrl').value.trim();
+            const audioFormat = document.getElementById('audioFormat').value;
+            
+            if (!videoUrl) {
+                alert('Por favor introduce un URL de YouTube válido.');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/download?url=${encodeURIComponent(videoUrl)}&format=${audioFormat}`);
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    
+                    // Extraer el nombre de archivo del encabezado Content-Disposition
+                    const contentDisposition = response.headers.get('Content-Disposition');
+                    let fileName = 'audio'; // Nombre de archivo predeterminado
+                    
+                    if (contentDisposition) {
+                        const match = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+                        if (match && match[1]) {
+                            fileName = match[1].replace(/['"]/g, '');
+                        }
+                    }
+                    
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                } else {
+                    alert('Error al convertir el video. Por favor, inténtalo de nuevo.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al convertir el video. Por favor, inténtalo de nuevo.');
+            }
+        });
+    </script>
+</body>
+</html>
